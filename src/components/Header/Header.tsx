@@ -60,7 +60,6 @@ const Header = () => {
                 className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <User className="w-5 h-5" />
-                <Menu className="w-5 h-5" />
               </button>
               
               {isMenuOpen && (
@@ -112,16 +111,25 @@ const Header = () => {
         </nav>
 
         {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
-        >
-          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        {isLoggedIn ? (
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden p-2 text-gray-600 hover:text-gray-900 transition-colors"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        ) : (
+          <Link 
+            to="/login"
+            className="lg:hidden bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+          >
+            Sign In
+          </Link>
+        )}
       </div>
 
       {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
+      {isMobileMenuOpen && isLoggedIn && (
         <div className="lg:hidden bg-white border-t border-gray-200">
           <div className="px-4 py-2 space-y-1">
             <button 
@@ -148,55 +156,40 @@ const Header = () => {
               Contact Us
             </Link>
             
-            {isLoggedIn ? (
-              <>
-                <div className="border-t border-gray-200 my-2"></div>
-                <Link 
-                  to="/profile" 
-                  className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Profile
-                </Link>
-                <Link 
-                  to="/booking-history" 
-                  className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Booking History
-                </Link>
-                <Link 
-                  to="/favorites" 
-                  className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <div className="flex items-center gap-2">
-                    <Heart className="w-4 h-4" />
-                    Favorite Mandaps
-                  </div>
-                </Link>
-                <button 
-                  onClick={handleLogout}
-                  className="block w-full text-left px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <LogOut className="w-4 h-4" />
-                    Logout
-                  </div>
-                </button>
-              </>
-            ) : (
-              <>
-                <div className="border-t border-gray-200 my-2"></div>
-                <Link 
-                  to="/login"
-                  className="block px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors text-center"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Sign In
-                </Link>
-              </>
-            )}
+            <div className="border-t border-gray-200 my-2"></div>
+            <Link 
+              to="/profile" 
+              className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Profile
+            </Link>
+            <Link 
+              to="/booking-history" 
+              className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Booking History
+            </Link>
+            <Link 
+              to="/favorites" 
+              className="block px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <div className="flex items-center gap-2">
+                <Heart className="w-4 h-4" />
+                Favorite Mandaps
+              </div>
+            </Link>
+            <button 
+              onClick={handleLogout}
+              className="block w-full text-left px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <LogOut className="w-4 h-4" />
+                Logout
+              </div>
+            </button>
           </div>
         </div>
       )}

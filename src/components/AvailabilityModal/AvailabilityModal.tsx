@@ -5,10 +5,18 @@ interface AvailabilityModalProps {
   venueName: string;
   availableDates: Date[];
   onClose: () => void;
+  onDateSelect?: (date: Date) => void;
 }
 
-const AvailabilityModal = ({ venueName, availableDates, onClose }: AvailabilityModalProps) => {
+const AvailabilityModal = ({ venueName, availableDates, onClose, onDateSelect }: AvailabilityModalProps) => {
   const [searchTerm, setSearchTerm] = useState('');
+
+  const handleDateClick = (date: Date) => {
+    if (onDateSelect) {
+      onDateSelect(date);
+      onClose();
+    }
+  };
 
   const filteredDates = useMemo(() => {
     if (!searchTerm) return availableDates;
@@ -77,7 +85,8 @@ const AvailabilityModal = ({ venueName, availableDates, onClose }: AvailabilityM
             {filteredDates.map((date, index) => (
               <div
                 key={index}
-                className="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                className="flex items-center p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition-colors"
+                onClick={() => handleDateClick(date)}
               >
                 <Calendar className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0" />
                 <div>

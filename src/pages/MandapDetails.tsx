@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { Play, Heart, MoreVertical, Star, Check, Calendar } from 'lucide-react';
-import BookingForm from '../components/BookingForm/BookingForm';
+import BookingModal from '../components/BookingModal/BookingModal';
 import AvailabilityModal from '../components/AvailabilityModal/AvailabilityModal';
 import { getMandapDetails , getReviewsByMandapId , getPhotographersByMandapId } from '../services/mandapServices'
 import { se } from 'date-fns/locale';
@@ -113,6 +113,7 @@ const MandapDetails = () => {
   const [selectedTab, setSelectedTab] = useState('about');
   const [showBookingForm, setShowBookingForm] = useState(false);
   const [showAvailability, setShowAvailability] = useState(false);
+  const [preSelectedDate, setPreSelectedDate] = useState<Date | null>(null);
   const isLoggedIn = true; // This should come from your auth context or state management
   // const availableDates = generateAvailableDates();
   const [isLoading, setIsLoading] = useState(true);
@@ -165,6 +166,12 @@ const MandapDetails = () => {
   useEffect(() => {
     getVenue() , getReview();
   }, []);
+
+  const handleDateSelect = (date: Date) => {
+    setPreSelectedDate(date);
+    setShowBookingForm(true);
+  };
+
   return (
     
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
@@ -262,10 +269,11 @@ const MandapDetails = () => {
       </div>
 
       {showBookingForm && (
-        <BookingForm 
+        <BookingModal 
           mandapId={mandap._id} 
           onClose={() => setShowBookingForm(false)} 
           availableDates={availableDates}
+          preSelectedDate={preSelectedDate}
         />
       )}
 
@@ -274,6 +282,7 @@ const MandapDetails = () => {
           venueName={mandap.mandapName}
           availableDates={availableDates}
           onClose={() => setShowAvailability(false)}
+          onDateSelect={handleDateSelect}
         />
       )}
 
